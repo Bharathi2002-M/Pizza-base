@@ -1,0 +1,1124 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,400i,700">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+ <link href='https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/bootstrap-responsive.css' rel='stylesheet' type='text/css'>
+ <link href='https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/bootstrap.css' rel='stylesheet' type='text/css'>
+ 
+<style>/* Global */
+
+body {
+  font-family: 'Source Code Pro', sans-serif;
+  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/dark_geometric.png');
+}
+hr {
+  margin: 0;
+  padding: 0;
+}
+/* Header */
+div.header {
+  background: #f00;
+  padding: 20px;
+  height: auto;
+}
+h1.logo {
+  font-size: 52px;
+  line-height: 42px;
+  letter-spacing: -2px;
+  color: #fff;
+  background-color: #f00;
+  margin: 0 0 20px 0;
+}
+
+
+
+
+/* Canvas Elements */
+.wrapper {
+    display: table;
+    width: 500px;
+    height: 500px;
+    position: relative;
+    z-index: -2;
+    /* padding: 39px; */
+    background: crimson;
+    border-radius: 50%;
+}
+.container1 {
+   display: table-cell;
+   vertical-align: middle;
+}
+.canvas-container {
+   position: relative;
+   max-width: 1024px;
+   margin: 0 auto;
+   z-index: 1;
+   padding: 0 20px;
+}
+
+#c, #c1 {
+   width: 100%;
+   height: auto;
+}
+#c {
+  display:block;
+  margin: auto 0px;
+}
+#c1, #c2 {
+  display:block;
+  margin:-70% auto 0px;
+}
+
+#cc, #cc1 {
+   width: 100%;
+   height: auto;
+}
+#cc {
+  display:block;
+  margin: auto 0px;
+}
+#cc1, #cc2 {
+  display:block;
+  margin:-70% auto 0px;
+}
+
+
+#ccc, #ccc1 {
+   width: 100%;
+   height: auto;
+}
+#ccc {
+  display:block;
+  margin: auto 0px;
+}
+#ccc1, #ccc2 {
+  display:block;
+  margin:-70% auto 0px;
+}
+
+
+
+/* Order Form / Toppings */
+
+form {
+  padding: 20px;
+  background: #fff;
+  width: 80%;
+}
+div.toppings {
+  background-color: #ddd;
+}
+div.formContainer {
+  margin-left: 20px;
+  width: 100%;
+}
+.btn {
+  padding: 5px 10px;
+  margin: 10px 0px;
+}
+label.btn {
+  font-weight: bold;
+}
+span.error {
+  color: #f00;
+  margin: 0 0 0 20px;
+  padding: 5px;
+  border:  1px dotted #f00;
+  font-size: 14px;
+}
+.orderForm h2 {
+  margin: 0 0 10px 0;
+  font-weight: normal;
+}
+.orderForm h3 {
+  font-weight: normal;
+  padding: 5px 0px;
+  margin: 0;
+}
+.orderForm hr {
+  margin: 10px 0 0 0;
+}
+.visible {
+  display: none;
+}
+select.crust {
+  width: 40%;
+}
+
+
+
+/* Output Section */
+
+#orderOutput {
+  min-height: 350px;
+  background-color: #666;
+  color:#fff;
+  border-left: 2px dashed #fff;
+  border-bottom: 2px dashed #fff;
+  position: relative;
+}
+
+#orderOutput .order {
+}
+
+#orderOutput h1 {
+  padding: 20px 0 25px 10px;
+  font-weight: normal;
+  border-bottom: 1px solid #fff;
+  margin: 0px;
+}
+#orderOutput h4 {
+  margin: 10px 0 0 0;
+  padding-left: 10px;
+  font-size: 20px;
+}
+
+#orderOutput h5 {
+  margin:15px 0 0 0;
+  padding-left: 30px;
+  font-size: 16px;
+}
+
+#orderOutput p {
+  margin: 5px 0 0 0;
+  padding-left: 35px;
+  font-size: 16px;
+}
+
+
+/* Footer */
+
+div.footer {
+  width: 100%;
+}
+.footer h3 {
+  color: #fff;
+  margin: 30px 15px 0 0;
+  font-weight: normal;
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+</style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+	      
+
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="toppings span4">
+            <div class="formContainer">
+              
+                <form class="orderForm">
+
+                    <h3>Crust:</h3>
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/crust.png" text="thin" ondragstart="drag(event)" draggable="true" width="80" height="80">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/crust1.png" text="thin1" ondragstart="drag(event)" draggable="true" width="80" height="80">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/crust2.png" text="thin2" ondragstart="drag(event)" draggable="true" width="80" height="80">
+                    <div id="topping" class="visible">
+                        <h3>Toppings</h3>
+
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/pepperoni.png" tooltip="Pepperoni" text="Pepperoni" ondragstart="drag(event)" draggable="true" width="70" height="70">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/sausage.png" text="sau" ondragstart="drag(event)" draggable="true" width="70" height="70">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/canBac.png" text="canBac" ondragstart="drag(event)" draggable="true" width="70" height="70">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/olive.png" text="olive" ondragstart="drag(event)" draggable="true" width="70" height="70">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/gpepper.png" text="gpepper" ondragstart="drag(event)" draggable="true" width="70" height="70">
+                        <button onClick="clearPizza();" class="btn addPizza2">Clear</button>
+                    </div>
+
+                </form>
+            </div><!-- End formContainer -->
+             <span class="newOrder"></span>
+            <div class="formShow2 formContainer visible">
+           
+              <br>
+           
+            </div><!-- End formContainer -->
+            <span class="newOrder"></span>
+        </div><!-- end span4 -->
+
+
+<div class="span4" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="wrapper pizza" >
+          <div class="container1 container" ondrop="drop(event)" ondragover="allowDrop(event)">
+              <div class="canvas-container" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <canvas id="c" width="620" height="430"></canvas>
+                <canvas id="c1" width="620" height="430"></canvas>
+              </div><!-- End of canvas-container -->
+            </div><!-- End of Container -->
+        </div><!-- End of Wrapper --><span class="newPizza"></span>
+        <div class="wrapper pizza1 visible" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="container1 container">
+              <div class="canvas-container">
+                <canvas id="cc" width="620" height="430"></canvas>
+                <canvas id="cc1" width="620" height="430"></canvas>
+              </div><!-- End of canvas-container -->
+            </div><!-- End of Container -->
+        </div><!-- End of Wrapper --><span class="newPizza"></span>
+        <div class="wrapper pizza2 visible" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="container1 container">
+              <div class="canvas-container">
+                <canvas id="ccc" width="620" height="430"></canvas>
+                <canvas id="ccc1" width="620" height="430"></canvas>
+              </div><!-- End of canvas-container -->
+            </div><!-- End of Container -->
+        </div><!-- End of Wrapper --><span class="newPizza"></span>
+</div><!-- End Span4 -->
+
+         
+      </div> <!-- end of Span12 -->
+    </div><!-- end row-fluid -->
+
+     
+    </div>
+
+
+
+
+<script>
+ 
+var canvas = document.getElementById('c');
+var ctx = canvas.getContext('2d');
+var canvas1 = document.getElementById('c1');
+var ctxToppings = canvas1.getContext('2d');
+
+// Variables for new Pizza's
+var canvasX = document.getElementById('cc');
+var ctxX = canvasX.getContext('2d');
+var canvasX1 = document.getElementById('cc1');
+var ctxToppingsX = canvasX1.getContext('2d');
+
+// Variables for new Pizza's
+var canvasXX = document.getElementById('ccc');
+var ctxXX = canvasXX.getContext('2d');
+var canvasXX1 = document.getElementById('ccc1');
+var ctxToppingsXX = canvasXX1.getContext('2d');
+
+
+ 
+
+ 
+var img = document.createElement('IMG');
+var img1 = document.createElement('IMG');
+var img2 = document.createElement('IMG');
+var pepImg = document.createElement('IMG');
+var sauImg = document.createElement('IMG');
+var canBacImg = document.createElement('IMG');
+var oliveImg = document.createElement('IMG');
+var gpepperImg = document.createElement('IMG');
+var rpepperImg = document.createElement('IMG');
+ 
+img.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/crust.png";
+img1.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/crust1.png";
+img2.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/crust2.png";
+pepImg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/pepperoni.png";
+sauImg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/sausage.png";
+canBacImg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/canBac.png";
+oliveImg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/olive.png";
+gpepperImg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/gpepper.png";
+rpepperImg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/144812/rpepper.png";
+
+// Specify Object Arrays
+var pepTop = [];
+var pepTop1 = [];
+var pepTop2 = [];
+var sauTop = [];
+var sauTop1 = [];
+var sauTop2 = [];
+var oliveTop = [];
+var oliveTop1 = [];
+var oliveTop2 = [];
+var canBacTop = [];
+var canBacTop1 = [];
+var canBacTop2 = [];
+var gpepperTop = [];
+var gpepperTop1 = [];
+var gpepperTop2 = [];
+
+
+
+
+// When the image is loaded, draw and clip
+img.onload = function () {
+    ctx.arc(315, 215, 320, 0, Math.PI * 2, false);
+    ctxToppings.arc(315, 320, 250, 0, Math.PI * 2, false);
+    ctxToppingsX.arc(315, 320, 250, 0, Math.PI * 2, false);
+    ctxToppingsXX.arc(315, 320, 250, 0, Math.PI * 2, false);
+    ctx.clip();
+    ctxToppings.clip();
+    ctxToppingsX.clip();
+    ctxToppingsXX.clip();
+
+    //ctx.drawImage(img,0,0);
+    //drawAllToppings(); // Previous Testing Apparatus.
+    
+    spawnPepperoni(200);
+    spawnPepperoni1(200);
+    spawnPepperoni2(200);
+    spawnSausage(200);
+    spawnSausage1(200);
+    spawnSausage2(200);
+    spawnOlive(200);
+    spawnOlive1(200);
+    spawnOlive2(200);
+    spawnCanBac(200);  
+    spawnCanBac1(200);
+    spawnCanBac2(200);
+    spawnGpepper(200);
+    spawnGpepper1(200);
+    spawnGpepper2(200);
+
+} // End img.onload
+
+// Make Toppings Oval for Perspective
+ctxToppings.scale(1, 0.67);
+ctxToppingsX.scale(1, 0.67);
+ctxToppingsXX.scale(1, 0.67);
+
+// Clear the Toppings Canvas
+function clearCtxToppings() {
+  ctxToppings.clearRect(0,0,610,620);
+}
+function clearCtxToppingsX() {
+  ctxToppingsX.clearRect(0,0,610,620);
+}
+function clearCtxToppingsXX() {
+  ctxToppingsXX.clearRect(0,0,610,620);
+}
+
+
+
+// My Poor isChecked Function.... Still not working right.
+/*function isChecked() {
+  //alert('hi');
+ /*   $('input[type=checkbox]').each(function () {
+           if (this.checked) {
+              var topping = $(this).data('topping');
+              var draw = 'drawAll'+topping+'();';
+              console.log(draw);
+           }
+  });
+}
+$('input').on('change', function() {
+      //alert(this.value);
+      ctxToppings.clearRect(0,0,610,620);
+      if (this.value == "Pepperoni"){
+        drawAllPepperoni();
+      }
+      if (this.value == "Sausage") {
+        drawAllSausage();
+      } 
+  });*/
+
+
+
+
+
+
+// My ugly last minute Specialty Pizza's 
+
+ function specialtyMeat() {
+ 
+     $('.specialtym i').toggleClass('icon-plus icon-minus');   
+   
+  if ($('.specialtym:checked').val()) {
+      $("input.pep").attr('checked', true);
+      $("input.sau").attr('checked', true);
+      $("input.canBac").attr('checked', true);
+      drawAllCanBac();
+      drawAllSausage();
+      drawAllPepperoni();
+    } else {
+      $("input.pep").attr('checked', false);
+      $("input.sau").attr('checked', false);
+      $("input.canBac").attr('checked', false);
+      clearCtxToppings();
+      $('label.pep').removeClass('active');
+      $('label.sau').removeClass('active');
+      $('label.canBac').removeClass('active');
+      $('.pep i').toggleClass('icon-plus icon-minus'); 
+      $('.sau i').toggleClass('icon-plus icon-minus'); 
+      $('.canBac i').toggleClass('icon-plus icon-minus');
+    }
+ }
+function specialtyMeat1() {
+ 
+     $('.specialtym1 i').toggleClass('icon-plus icon-minus');   
+   
+  if ($('.specialtym1:checked').val()) {
+
+      $("input.pep1").attr('checked', true);
+      $("input.sau1").attr('checked', true);
+      $("input.canBac1").attr('checked', true);
+      drawAllCanBac1();
+      drawAllSausage1();
+      drawAllPepperoni1();
+    } else {
+      $("input.pep1").attr('checked', false);
+      $("input.sau1").attr('checked', false);
+      $("input.canBac1").attr('checked', false);
+      clearCtxToppings();
+      $('label.pep1').removeClass('active');
+      $('label.sau1').removeClass('active');
+      $('label.canBac1').removeClass('active');
+      $('.pep1 i').toggleClass('icon-plus icon-minus'); 
+      $('.sau1 i').toggleClass('icon-plus icon-minus'); 
+      $('.canBac1 i').toggleClass('icon-plus icon-minus');
+    }
+ }
+function specialtyMeat2() {
+ 
+     $('.specialtym2 i').toggleClass('icon-plus icon-minus');   
+   
+  if ($('.specialtym2:checked').val()) {
+
+      $("input.pep2").attr('checked', true);
+      $("input.sau2").attr('checked', true);
+      $("input.canBac2").attr('checked', true);
+      drawAllCanBac2();
+      drawAllSausage2();
+      drawAllPepperoni2();
+    } else {
+      $("input.pep2").attr('checked', false);
+      $("input.sau2").attr('checked', false);
+      $("input.canBac2").attr('checked', false);
+      clearCtxToppings();
+      $('label.pep2').removeClass('active');
+      $('label.sau2').removeClass('active');
+      $('label.canBac2').removeClass('active');
+      $('.pep2 i').toggleClass('icon-plus icon-minus'); 
+      $('.sau2 i').toggleClass('icon-plus icon-minus'); 
+      $('.canBac2 i').toggleClass('icon-plus icon-minus');
+    }
+ }
+
+function specialtyVeggie() {
+  //$('input').attr('checked', false);
+     $('.specialtyv i').toggleClass('icon-plus icon-minus');   
+  if ($('.specialtyv:checked').val()) {
+      $("input.olive").attr('checked', true);
+      $("input.gpep").attr('checked', true);
+      drawAllGpepper();
+      drawAllOlive();
+    } else {
+      $("input.olive").attr('checked', false);
+      $("input.gpep").attr('checked', false);
+      clearCtxToppings();
+      $('label.olive').removeClass('active');
+      $('label.gpep').removeClass('active');
+      $('label.canBac').removeClass('active');
+      $('.olive i').toggleClass('icon-plus icon-minus'); 
+      $('.gpep i').toggleClass('icon-plus icon-minus');
+    }
+ }
+function specialtyVeggie1() {
+  //$('input').attr('checked', false);
+     $('.specialtyv1 i').toggleClass('icon-plus icon-minus');   
+  if ($('.specialtyv1:checked').val()) {
+      $("input.olive1").attr('checked', true);
+      $("input.gpep1").attr('checked', true);
+      drawAllGpepper1();
+      drawAllOlive1();
+    } else {
+      $("input.olive1").attr('checked', false);
+      $("input.gpep1").attr('checked', false);
+      clearCtxToppings1();
+      $('label.olive1').removeClass('active');
+      $('label.gpep1').removeClass('active');
+      $('label.canBac1').removeClass('active');
+      $('.olive1 i').toggleClass('icon-plus icon-minus'); 
+      $('.gpep1 i').toggleClass('icon-plus icon-minus');
+    }
+ }
+ function specialtyVeggie2() {
+  //$('input').attr('checked', false);
+     $('.specialtyv2 i').toggleClass('icon-plus icon-minus');   
+  if ($('.specialtyv2:checked').val()) {
+      $("input.olive2").attr('checked', true);
+      $("input.gpep2").attr('checked', true);
+      drawAllGpepper2();
+      drawAllOlive2();
+    } else {
+      $("input.olive2").attr('checked', false);
+      $("input.gpep2").attr('checked', false);
+      clearCtxToppings2();
+      $('label.olive2').removeClass('active');
+      $('label.gpep2').removeClass('active');
+      $('label.canBac2').removeClass('active');
+      $('.olive2 i').toggleClass('icon-plus icon-minus'); 
+      $('.gpep2 i').toggleClass('icon-plus icon-minus');
+    }
+ }
+
+
+
+// *************************************    Start Topping Objects     ***************************************************
+
+
+    //Start Peperoni Object Group 
+
+    // Pepperoni Object
+    function Pepperoni() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 45;
+        this.height = 45;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Pepperoni.prototype.draw = function () {
+        ctxToppings.drawImage(pepImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnPepperoni(number) {
+        for (var i = 0; i < number; i++) {
+            pepTop[pepTop.length] = new Pepperoni();
+        }
+    }
+
+    function drawAllPepperoni() {
+          for (var i = 0; i < pepTop.length; i++) {
+                pepTop[i].draw();
+            }
+       
+    }
+
+
+    // Pepperoni1 Object
+    function Pepperoni1() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 45;
+        this.height = 45;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Pepperoni1.prototype.draw = function () {
+        ctxToppingsX.drawImage(pepImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnPepperoni1(number) {
+        for (var i = 0; i < number; i++) {
+            pepTop1[pepTop1.length] = new Pepperoni1();
+        }
+    }
+
+    function drawAllPepperoni1() {
+
+        $('label.pep1').addClass('active');
+        $('.pep1 i').toggleClass('icon-plus icon-minus');
+
+        var pep = $('#pep1').get(0);
+        if (pep.checked) {
+            for (var i = 0; i < pepTop1.length; i++) {
+                pepTop1[i].draw();
+            }
+        } else {
+            $('label.pep1').removeClass('active');
+            //isChecked();
+        }
+    }
+
+    // Pepperoni2 Object
+    function Pepperoni2() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 45;
+        this.height = 45;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Pepperoni2.prototype.draw = function () {
+        ctxToppingsXX.drawImage(pepImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnPepperoni2(number) {
+        for (var i = 0; i < number; i++) {
+            pepTop2[pepTop2.length] = new Pepperoni2();
+        }
+    }
+
+    function drawAllPepperoni2() {
+        $('label.pep2').addClass('active');
+        $('.pep2 i').toggleClass('icon-plus icon-minus');
+        var pep2 = $('#pep2').get(0);
+        if (pep2.checked) {
+            for (var i = 0; i < pepTop1.length; i++) {
+                pepTop2[i].draw();
+            }
+        } else {
+            $('label.pep1').removeClass('active');
+            //isChecked();
+        }
+    }
+
+
+
+    // Sausage Object
+    function Sausage() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 61;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Sausage.prototype.draw = function () {
+        ctxToppings.drawImage(sauImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnSausage(number) {
+        for (var i = 0; i < number; i++) {
+            sauTop[sauTop.length] = new Sausage();
+        }
+    }
+    function drawAllSausage() {
+         for (var i = 0; i < sauTop.length; i++) {
+                sauTop[i].draw();
+            }
+        
+    }
+
+
+    // Sausage1 Object
+    function Sausage1() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 61;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Sausage1.prototype.draw = function () {
+        ctxToppingsX.drawImage(sauImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnSausage1(number) {
+        for (var i = 0; i < number; i++) {
+            sauTop1[sauTop1.length] = new Sausage1();
+        }
+    }
+
+    function drawAllSausage1() {
+
+        $('label.sau1').addClass('active');
+        $('.sau1 i').toggleClass('icon-plus icon-minus');
+
+        var sau = $('#sau1').get(0);
+        if (sau.checked) {
+            for (var i = 0; i < sauTop1.length; i++) {
+                sauTop1[i].draw();
+            }
+        } else {
+            $('label.sau1').removeClass('active');
+            //isChecked();
+        }
+    }
+
+    // Sausage2 Object
+    function Sausage2() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 61;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Sausage2.prototype.draw = function () {
+        ctxToppingsXX.drawImage(sauImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnSausage2(number) {
+        for (var i = 0; i < number; i++) {
+            sauTop2[sauTop2.length] = new Sausage2();
+        }
+    }
+
+    function drawAllSausage2() {
+
+        $('label.sau2').addClass('active');
+        $('.sau2 i').toggleClass('icon-plus icon-minus');
+
+        var sau = $('#sau2').get(0);
+        if (sau.checked) {
+            for (var i = 0; i < sauTop2.length; i++) {
+                sauTop2[i].draw();
+            }
+        } else {
+            $('label.sau2').removeClass('active');
+            //isChecked();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Canadian Bacon Object
+    function CanBac() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 46;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    CanBac.prototype.draw = function () {
+        ctxToppings.drawImage(canBacImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnCanBac(number) {
+        for (var i = 0; i < number; i++) {
+            canBacTop[canBacTop.length] = new CanBac();
+        }
+    }
+    function drawAllCanBac() {
+             for (var i = 0; i < canBacTop.length; i++) {
+                canBacTop[i].draw();
+            }
+       
+    }
+
+    // Canadian Bacon1 Object
+    function CanBac1() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 46;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    CanBac1.prototype.draw = function () {
+        ctxToppingsX.drawImage(canBacImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnCanBac1(number) {
+        for (var i = 0; i < number; i++) {
+            canBacTop1[canBacTop1.length] = new CanBac1();
+        }
+    }
+
+    function drawAllCanBac1() {
+
+        $('label.canBac1').addClass('active');
+        $('.canBac1 i').toggleClass('icon-plus icon-minus');
+
+        var canBac = $('#canBac1').get(0);
+        if (canBac.checked) {
+            for (var i = 0; i < canBacTop1.length; i++) {
+                canBacTop1[i].draw();
+            }
+        } else {
+            $('label.canBac1').removeClass('active');
+            //isChecked();
+        }
+    }
+    // Canadian Bacon2 Object
+    function CanBac2() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 46;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    CanBac2.prototype.draw = function () {
+        ctxToppingsXX.drawImage(canBacImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnCanBac2(number) {
+        for (var i = 0; i < number; i++) {
+            canBacTop2[canBacTop2.length] = new CanBac2();
+        }
+    }
+
+    function drawAllCanBac2() {
+
+        $('label.canBac2').addClass('active');
+        $('.canBac2 i').toggleClass('icon-plus icon-minus');
+
+        var canBac2 = $('#canBac2').get(0);
+        if (canBac2.checked) {
+            for (var i = 0; i < canBacTop2.length; i++) {
+                canBacTop2[i].draw();
+            }
+        } else {
+            $('label.canBac2').removeClass('active');
+            //isChecked();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Olive Object
+    function Olive() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 50;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Olive.prototype.draw = function () {
+        ctxToppings.drawImage(oliveImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnOlive(number) {
+        for (var i = 0; i < number; i++) {
+            oliveTop[oliveTop.length] = new Olive();
+        }
+    }
+    function drawAllOlive() {
+           for (var i = 0; i < oliveTop.length; i++) {
+                oliveTop[i].draw();
+            }
+       
+    }
+
+    // Olive 1 Object
+    function Olive1() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 50;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Olive1.prototype.draw = function () {
+        ctxToppingsX.drawImage(oliveImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnOlive1(number) {
+        for (var i = 0; i < number; i++) {
+            oliveTop1[oliveTop1.length] = new Olive1();
+        }
+    }
+
+    function drawAllOlive1() {
+
+        $('label.olive1').addClass('active');
+        $('.olive1 i').toggleClass('icon-plus icon-minus');
+
+        var olive = $('#olive1').get(0);
+        if (olive.checked) {
+            for (var i = 0; i < oliveTop1.length; i++) {
+                oliveTop1[i].draw();
+            }
+        } else {
+            $('label.olive1').removeClass('active');
+            //isChecked();
+        }
+    }
+
+    // Olive 2 Object
+    function Olive2() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 50;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Olive2.prototype.draw = function () {
+        ctxToppingsXX.drawImage(oliveImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnOlive2(number) {
+        for (var i = 0; i < number; i++) {
+            oliveTop2[oliveTop2.length] = new Olive2();
+        }
+    }
+
+    function drawAllOlive2() {
+
+        $('label.olive2').addClass('active');
+        $('.olive2 i').toggleClass('icon-plus icon-minus');
+
+        var olive2 = $('#olive2').get(0);
+        if (olive2.checked) {
+            for (var i = 0; i < oliveTop2.length; i++) {
+                oliveTop2[i].draw();
+            }
+        } else {
+            $('label.olive2').removeClass('active');
+            //isChecked();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Gpepper Object
+    function Gpepper() {
+        this.srcX = 0;
+        this.srcY = 0;
+        this.width = 50;
+        this.height = 31;
+        this.drawX = Math.floor(Math.random() * 610);
+        this.drawY = Math.floor(Math.random() * 630);
+    }
+    Gpepper.prototype.draw = function () {
+        ctxToppings.drawImage(gpepperImg, this.srcX, this.srcY, this.width, this.height, this.drawX, this.drawY, this.width, this.height);
+    }
+    function spawnGpepper(number) {
+        for (var i = 0; i < number; i++) {
+            gpepperTop[gpepperTop.length] = new Gpepper();
+        }
+    }
+
+    function drawAllGpepper() {
+           for (var i = 0; i < gpepperTop.length; i++) {
+                gpepperTop[i].draw();
+            }
+       
+    }
+
+     
+
+ 
+/***************************** SUBMIT FUNCTION *******************************/
+
+$(function(){
+  $('.crustThick').on('change', function() {
+     
+      ctx.clearRect(0,0,640,640);
+      if (this.value == "Hand Tossed") {
+        ctx.drawImage(img,0,0);
+      } else if (this.value == "Deep Dish") {
+        ctx.drawImage(img1,0,0);
+      } else if (this.value == "Thin") {
+        ctx.drawImage(img2,0,0);
+      }
+  });
+
+$('.crustThick1').on('change', function() {
+      //alert(this.value);
+      ctxX.clearRect(0,0,640,640);
+      if (this.value == "Hand Tossed") {
+        ctxX.drawImage(img,0,0);
+      } else if (this.value == "Deep Dish") {
+        ctxX.drawImage(img1,0,0);
+      } else if (this.value == "Thin") {
+        ctxX.drawImage(img2,0,0);
+      }
+  });
+
+$('.crustThick2').on('change', function() {
+      //alert(this.value);
+      ctxXX.clearRect(0,0,640,640);
+      if (this.value == "Hand Tossed") {
+        ctxXX.drawImage(img,0,0);
+      } else if (this.value == "Deep Dish") {
+        ctxXX.drawImage(img1,0,0);
+      } else if (this.value == "Thin") {
+        ctxXX.drawImage(img2,0,0);
+      }
+  });
+
+
+    
+   
+
+});// End Ready 
+</script>
+</body>
+<style>
+#div1 {
+  width: 350px;
+  height: 350px;
+  padding: 10px;
+border-radius:50%;
+  border: 1px solid #aaaaaa;
+}
+</style>
+<script>
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+    var pan = false;
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.attributes.text.nodeValue);
+}
+    function clearPizza() {
+
+        ctx.clearRect(0, 0, 640, 640);
+        ctxToppings.clearRect(0, 0, 610, 620);
+        
+            $("#topping").addClass('visible');
+      
+    }
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+   
+if(data=='thin'){
+ ctx.clearRect(0,0,640,640);
+    ctx.drawImage(img, 0, 0);
+    pan = true;
+}
+if(data=='thin1'){
+ ctx.clearRect(0,0,640,640);
+    ctx.drawImage(img1, 0, 0); pan = true;
+}
+if(data=='thin2'){
+ ctx.clearRect(0,0,640,640);
+    ctx.drawImage(img2, 0, 0); pan = true;
+}
+if(data=='Pepperoni'){
+drawAllPepperoni();
+}
+if(data=='sau'){
+ drawAllSausage();
+}
+if(data=='canBac'){
+ drawAllCanBac();
+}
+if(data=='olive'){
+ drawAllOlive();
+}
+if(data=='gpepper'){
+drawAllGpepper();
+}
+ 
+    if (pan) {
+        $("#topping").removeClass('visible');
+    }
+    else {
+        $("#topping").addClass('visible');
+    }
+}
+function stringToHTML(str) {
+	var dom = document.createElement('div');
+	dom.innerHTML = str;
+	return dom;
+
+}
+</script>
+ 
+</html>
